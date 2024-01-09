@@ -1,9 +1,9 @@
 import { useState } from "react"
 import sendButton from "../assets/Icons/arrow-right.svg"
 
-const SendMessage = () => {
+const SendMessage = ({ getMessage }) => {
     const [text, setText] = useState("")
-    
+
     const handleChange = (e)=>{
         setText(e.target.value)
     }
@@ -15,8 +15,9 @@ const SendMessage = () => {
 
     const handleSubmit = ()=>{
         if(!text) return
-        console.log(text);
+        getMessage(text)
         setText("");
+
     }
 
     //find a way to calculate the height of text-area in
