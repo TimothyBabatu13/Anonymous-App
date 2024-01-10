@@ -1,8 +1,14 @@
-import { useState } from "react"
-import sendButton from "../assets/Icons/arrow-right.svg"
+import { useContext, useState } from "react";
+import sendButton from "../assets/Icons/arrow-right.svg";
+import App from "../App";
+import app from "../API/firebase";
+import { collection, addDoc, getFirestore, Timestamp } from "firebase/firestore"; 
 
 const SendMessage = ({ getMessage }) => {
 
+    const date = new Date();
+    console.log(date)
+    console.log(date.toLocaleString())
     /*
     messages/
     messageID1/
@@ -21,10 +27,29 @@ const SendMessage = ({ getMessage }) => {
 */
     const [text, setText] = useState("")
 
+    const Context = App.createContextHook;
+    const context = useContext(Context);
+    const db = getFirestore(app)
+
+    console.log(context);
     const handleChange = (e)=>{
         setText(e.target.value)
     }
 
+    const sendMessage = async () =>{
+        const docRef = await addDoc(collection(db, "messages"), {
+            senderUID: context.uid,
+            receiverUID: context.receiverUid,
+            timestamp: Timestamp.fromDate(date.toLocaleString()),
+            isRead: false,
+            typing: false,
+            content: text
+          })
+          .then(res => console.log(res))
+          .catch(err => console.log(err))
+        //   console.log("Document written with ID: ", docRef.id);
+          
+    }
     const expandHeight = (e)=>{
         if(!e.target.innerHTML) e.target.style.height = "1px" 
         e.target.style.height = e.target.scrollHeight + "px"
@@ -33,6 +58,7 @@ const SendMessage = ({ getMessage }) => {
     const handleSubmit = ()=>{
         if(!text) return
         getMessage(text)
+        sendMessage()
         setText("");
 
     }

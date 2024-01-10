@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import SendMessage from "../Components/SendMessage";
 import backButton from "../assets/Icons/arrow-left.svg"
 import userImage from "../assets/userImage.jpeg"
-
+import App from "../App";
 const Chat = () => {
+    
+    const Context = App.createContextHook;
     const [updateUI, setUpdateUI] = useState(0);
+    const context = useContext(Context)
+ 
     const uid = 1;
     const chatMessage = [
         {
