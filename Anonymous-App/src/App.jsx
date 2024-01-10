@@ -2,7 +2,7 @@ import './App.css'
 import Chat from './App/Chat'
 import { SignUp } from './App/SignUp';
 import SIgnIn from './App/SIgnIn';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Route, useNavigate} from "react-router-dom";
 import { createContext, useEffect, useState } from 'react';
 import app from './API/firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -11,7 +11,7 @@ const createContextHook = createContext();
 function App() {
 
   const [userUID, setUserUID] = useState("");
-  
+  const [show, setShow] = useState(false);
   const auth = getAuth();
   
   useEffect(()=>{
@@ -19,9 +19,9 @@ function App() {
       if (user) {
         const uid = user.uid;
         setUserUID(uid)
-        // console.log(uid)
       } else {
-        console.log("user is not signed in")
+        console.log("user is not signed in");
+        setShow(true)
       }
     });
     
@@ -32,7 +32,8 @@ function App() {
     receiverUid: ""
   }
 
-  if(!userUID){
+
+  if(!userUID && !show){
     return <h1> Loading...</h1>
   }
 
@@ -47,6 +48,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       </createContextHook.Provider>
+      <button onClick={()=>auth.signOut().then(res => console.log(res)).catch(err => console.log(err))}>Sign out</button>
     </div>
   )
 }
