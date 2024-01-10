@@ -2,6 +2,7 @@ import './App.css'
 import Chat from './App/Chat'
 import { SignUp } from './App/SignUp';
 import SIgnIn from './App/SIgnIn';
+import OtherUsers from './App/OtherUsers';
 import {BrowserRouter, Routes, Route, useNavigate} from "react-router-dom";
 import { createContext, useEffect, useState } from 'react';
 import app from './API/firebase';
@@ -44,7 +45,8 @@ function App() {
         <Routes>
           <Route path='/' element={<SignUp />}/>
           <Route path='/signin' element={<SIgnIn />} />
-          <Route path='/chat' element={<Chat />} />
+          <Route path='/chat/:receipientUID' element={<Chat />} />
+          <Route path='/people' element={<OtherUsers />} />
         </Routes>
       </BrowserRouter>
       </createContextHook.Provider>

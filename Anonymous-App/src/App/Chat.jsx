@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import SendMessage from "../Components/SendMessage";
 import backButton from "../assets/Icons/arrow-left.svg"
 import userImage from "../assets/userImage.jpeg"
@@ -8,7 +9,8 @@ const Chat = () => {
     const Context = App.createContextHook;
     const [updateUI, setUpdateUI] = useState(0);
     const context = useContext(Context)
- 
+
+    console.log(context)
     const uid = 1;
     const chatMessage = [
         {
@@ -31,6 +33,10 @@ const Chat = () => {
         }
     ]
     const [message, setMessage] = useState(chatMessage);
+    const params = useParams();
+    context.receiverUid = params.receipientUID;
+    // context.receiverUid = params
+    //use params to search for the values and get all the messages so it can be displayed to the user
     const handleTi = (e)=>{
         setMessage(prevMessages =>[...prevMessages, {
             sender: "Christanah",
