@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import app from "../API/firebase";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Form = ({ signUp, buttonText, path, routeText }) => {
     
@@ -9,6 +13,7 @@ const Form = ({ signUp, buttonText, path, routeText }) => {
     })
 
     const navigate = useNavigate();
+    const auth = getAuth();
 
     const handleChange = (e)=>{
         setInfo(prev =>({
@@ -16,10 +21,38 @@ const Form = ({ signUp, buttonText, path, routeText }) => {
             [e.target.name]: e.target.value
         }));
     }
+
+    const registerAccount = ()=>{
+        createUserWithEmailAndPassword(auth, info.email, info.password)
+        .then((userCredential) => { 
+            const user = userCredential.user;
+            console.log(user)
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage)
+            toast.error(errorCode, errorMessage)
+        });
+    }
+
+    const loginAccount = ()=>{
+        signInWithEmailAndPassword(auth, info.email, info.password)
+        .then((userCredential) => { 
+            const user = userCredential.user;
+            console.log(user)
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage)
+        });
+
+    }
     const handleSubmit = (e) =>{
         e.preventDefault();
-        signUp ? console.log("This is for signup") : console.log("This is for sign In")
-        console.log(info)
+        signUp ? registerAccount() : loginAccount()
+
     }
 
     const handleRoute = (e) =>{
@@ -46,6 +79,7 @@ const Form = ({ signUp, buttonText, path, routeText }) => {
         />
         <button onClick={handleSubmit} type="submit">{buttonText}</button>
         <button onClick={handleRoute}>{routeText}</button>
+        <ToastContainer />
     </form>
   )
 }

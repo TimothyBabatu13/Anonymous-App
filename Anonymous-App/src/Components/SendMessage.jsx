@@ -2,6 +2,23 @@ import { useState } from "react"
 import sendButton from "../assets/Icons/arrow-right.svg"
 
 const SendMessage = ({ getMessage }) => {
+
+    /*
+    messages/
+    messageID1/
+        sender: userID1
+        receiver: userID2
+        content: "Hello, how are you?"
+        timestamp: 1641826800
+        isRead: false
+    messageID2/
+        sender: userID2
+        receiver: userID1
+        content: "I'm good, thanks! How about you?"
+        timestamp: 1641826860
+        isRead: true
+        In this example, messageID1 rep
+*/
     const [text, setText] = useState("")
 
     const handleChange = (e)=>{
